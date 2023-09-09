@@ -47,14 +47,17 @@
           </option>
         </select>
       </div>
-      <button @click="sendForm()">Add Expense</button>
+      <button v-if="isEdit" @click.prevent="editFom(expense)">
+        Edit Expense
+      </button>
+      <button v-else @click.prevent="sendForm()">Add expense</button>
     </form>
   </div>
 </template>
 
 <script lang="ts">
 import { Wallet } from "@/types/Wallet";
-import { defineComponent, ref, PropType } from "vue";
+import { defineComponent, ref, PropType, computed } from "vue";
 
 const INITIAL_STATE = {
   description: "",
@@ -83,15 +86,40 @@ export default defineComponent({
       require: true,
       type: Function,
     },
+    editExpense: {
+      require: false,
+      type: Object as PropType<Wallet>,
+    },
+    deleteExpense: {
+      require: true,
+      type: Function,
+    },
+    cleanEdit: {
+      require: true,
+      type: Function,
+    },
   },
-  setup() {
-    const expense = ref<Wallet>(INITIAL_STATE);
-    return { expense };
+  setup(props) {
+    let expense = ref<Wallet>(INITIAL_STATE);
+    let isEdit = ref<boolean>(false);
+    isEdit = computed(() => {
+      if (props.editExpense && props.editExpense !== INITIAL_STATE) {
+        return true;
+      }
+      return false;
+    });
+    expense = computed(() => {
+      if (props.editExpense) {
+        return { ...props.editExpense };
+      }
+      return INITIAL_STATE;
+    });
+    return { expense, isEdit };
   },
   methods: {
     sendForm() {
       if (this.addNewExpense) {
-        this.addNewExpense(this.expense);
+        this.addNewExpense({ ...this.expense });
         Object.keys(this.expense).forEach((key) => {
           const field = key as keyof Wallet;
           if (field === "value") {
@@ -102,6 +130,12 @@ export default defineComponent({
         });
       } else {
         throw new Error("AddExpense isn't defined");
+      }
+    },
+    editFom(expense: Wallet) {
+      if (this.addNewExpense && this.cleanEdit) {
+        this.addNewExpense(expense);
+        this.cleanEdit();
       }
     },
   },

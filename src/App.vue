@@ -1,5 +1,4 @@
 <template>
-  <header>{{ console.log(this) }}</header>
   <main>
     <section>
       <div>
@@ -7,12 +6,19 @@
         <AddExpense
           :addNewExpense="addNewExpense"
           :arrayCurrencies="arrayCurrencies(currencies)"
+          :deleteExpense="deleteExpense"
+          :editExpense="dataToEdit"
           :methodsPayment="methodsPayment"
           :typeOfExpense="typeOfExpense"
+          :cleanEdit="cleanEdit"
         />
       </div>
       <section>
-        <ExpensesList :expenses="expenses" :editExpense="editExpense" />
+        <ExpensesList
+          :expenses="expenses"
+          :editExpense="editExpense"
+          :deleteExpense="deleteExpense"
+        />
       </section>
     </section>
   </main>
@@ -51,7 +57,8 @@ export default defineComponent({
     const methodsPayment = ref<string[]>(["credit card", "debit card", "cash"]);
     const typeOfExpense = ref<string[]>(["health", "food", "leisure"]);
     const expenses = ref<Wallet[]>([]);
-    return { currencies, methodsPayment, typeOfExpense, expenses };
+    const dataToEdit = ref<Wallet>();
+    return { currencies, methodsPayment, typeOfExpense, expenses, dataToEdit };
   },
   methods: {
     arrayCurrencies(data: Currencies): string[] {
@@ -61,13 +68,27 @@ export default defineComponent({
       return this.expenses.length.toString();
     },
     addNewExpense(expense: Wallet) {
-      this.expenses = [
-        ...this.expenses,
-        { ...expense, id: this.idGenerator() },
-      ];
+      if (expense.id === "") {
+        this.expenses = [
+          ...this.expenses,
+          { ...expense, id: this.idGenerator() },
+        ];
+      } else {
+        this.expenses = [
+          ...this.expenses.filter(({ id }) => id !== expense.id),
+          expense,
+        ];
+      }
     },
     editExpense(expenseId: string) {
-      return this.expenses.find(({ id }) => id === expenseId);
+      const data = this.expenses.find(({ id }) => id === expenseId);
+      if (data) this.dataToEdit = data;
+    },
+    deleteExpense(expenseId: string) {
+      this.expenses = this.expenses.filter(({ id }) => id !== expenseId);
+    },
+    cleanEdit(resetState: Wallet) {
+      this.dataToEdit = resetState;
     },
   },
 });
