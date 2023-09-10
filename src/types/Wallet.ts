@@ -1,4 +1,5 @@
 export interface Wallet {
+  currencies: Currencies;
   description: string;
   currency: string;
   method: string;

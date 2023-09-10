@@ -32,15 +32,20 @@
         </tbody>
         <tfoot>
           <tr>
-            <th colspan="6">Total</th>
-            <th>
+            <th colspan="5">Total</th>
+            <th colspan="2">
               {{
-                expenses
-                  .reduce(
-                    (total, currExpense) => (total += currExpense.value || 0),
-                    0
-                  )
-                  .toFixed(2)
+                ` R$  
+                ${expenses
+                  .reduce((total, currExpense) => {
+                    const { currency, value, currencies } = currExpense;
+                    if (value) {
+                      total +=
+                        value * Number(currencies[currency.concat("BRL")].ask);
+                    }
+                    return total;
+                  }, 0)
+                  .toFixed(2)}`
               }}
             </th>
           </tr>

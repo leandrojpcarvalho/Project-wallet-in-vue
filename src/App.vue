@@ -34,26 +34,7 @@ export default defineComponent({
   name: "App",
   components: { AddExpense, ExpensesList },
   data() {
-    const currencies = ref<Currencies>({
-      USDBRL: {
-        code: "USD",
-        codein: "BRL",
-        name: "Dólar Americano/Real Brasileiro",
-        ask: "4.9892",
-      },
-      EURBRL: {
-        code: "EUR",
-        codein: "BRL",
-        name: "Euro/Real Brasileiro",
-        ask: "5.3351",
-      },
-      BTCBRL: {
-        code: "BTC",
-        codein: "BRL",
-        name: "Bitcoin/Real Brasileiro",
-        ask: "129449",
-      },
-    });
+    const currencies = ref<Currencies>({});
     const methodsPayment = ref<string[]>(["credit card", "debit card", "cash"]);
     const typeOfExpense = ref<string[]>(["health", "food", "leisure"]);
     const expenses = ref<Wallet[]>([]);
@@ -90,6 +71,11 @@ export default defineComponent({
     cleanEdit(resetState: Wallet) {
       this.dataToEdit = resetState;
     },
+  },
+  mounted() {
+    fetch("https://economia.awesomeapi.com.br/last/USD-BRL,EUR-BRL,BTC-BRL")
+      .then((res) => res.json())
+      .then((data) => (this.currencies = data));
   },
 });
 </script>

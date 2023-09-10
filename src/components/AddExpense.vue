@@ -56,7 +56,7 @@
 </template>
 
 <script lang="ts">
-import { Wallet } from "@/types/Wallet";
+import { Currency, Wallet } from "@/types/Wallet";
 import { defineComponent, ref, PropType, computed } from "vue";
 
 const INITIAL_STATE = {
@@ -102,6 +102,7 @@ export default defineComponent({
   setup(props) {
     let expense = ref<Wallet>(INITIAL_STATE);
     let isEdit = ref<boolean>(false);
+    let isLoading = ref<boolean>(false);
     isEdit = computed(() => {
       if (props.editExpense && props.editExpense !== INITIAL_STATE) {
         return true;
@@ -114,17 +115,20 @@ export default defineComponent({
       }
       return INITIAL_STATE;
     });
+
     return { expense, isEdit };
   },
+
   methods: {
-    sendForm() {
+    async sendForm() {
       if (this.addNewExpense) {
+        this.expense.currencies = await this.newFetch();
         this.addNewExpense({ ...this.expense });
         Object.keys(this.expense).forEach((key) => {
           const field = key as keyof Wallet;
           if (field === "value") {
             this.expense[field] = null;
-          } else {
+          } else if (field !== "currencies") {
             this.expense[field] = "";
           }
         });
@@ -137,6 +141,15 @@ export default defineComponent({
         this.addNewExpense(expense);
         this.cleanEdit();
       }
+    },
+    async newFetch() {
+      return fetch(
+        "https://economia.awesomeapi.com.br/json/last/".concat(
+          `${this.expense.currency}-BRL`
+        )
+      )
+        .then((res) => res.json())
+        .then((data) => data);
     },
   },
 });
