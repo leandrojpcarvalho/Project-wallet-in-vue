@@ -8,6 +8,11 @@ export interface Wallet {
   id: string;
 }
 
+export interface User {
+  name: string;
+  currentBalance: number;
+}
+
 export interface Currency {
   code: string;
   codein: string;

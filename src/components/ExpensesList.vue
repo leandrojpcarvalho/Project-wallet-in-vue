@@ -13,6 +13,7 @@
             <th>Type of expense</th>
             <th>Currency</th>
             <th>Value</th>
+            <th>Value Converted</th>
           </tr>
         </thead>
         <tbody>
@@ -28,11 +29,17 @@
             <td>{{ expense.type }}</td>
             <td>{{ expense.currency }}</td>
             <td>{{ expense.value?.toFixed(2) }}</td>
+            <td v-if="expense.value">
+              {{
+                expense.value *
+                Number(expense.currencies[expense.currency.concat("BRL")].ask)
+              }}
+            </td>
           </tr>
         </tbody>
         <tfoot>
           <tr>
-            <th colspan="5">Total</th>
+            <th colspan="6">Total</th>
             <th colspan="2">
               {{
                 ` R$  

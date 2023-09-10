@@ -56,7 +56,7 @@
 </template>
 
 <script lang="ts">
-import { Currency, Wallet } from "@/types/Wallet";
+import { Wallet } from "@/types/Wallet";
 import { defineComponent, ref, PropType, computed } from "vue";
 
 const INITIAL_STATE = {
@@ -98,11 +98,14 @@ export default defineComponent({
       require: true,
       type: Function,
     },
+    isLoading: {
+      require: true,
+      type: Boolean,
+    },
   },
   setup(props) {
     let expense = ref<Wallet>(INITIAL_STATE);
     let isEdit = ref<boolean>(false);
-    let isLoading = ref<boolean>(false);
     isEdit = computed(() => {
       if (props.editExpense && props.editExpense !== INITIAL_STATE) {
         return true;
@@ -118,7 +121,6 @@ export default defineComponent({
 
     return { expense, isEdit };
   },
-
   methods: {
     async sendForm() {
       if (this.addNewExpense) {
