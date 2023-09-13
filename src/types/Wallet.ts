@@ -27,3 +27,9 @@ export interface Currencies {
 export interface AddExpense {
   addNewExpense: (param: Wallet) => void;
 }
+
+export interface Login extends User {
+  expenses: Wallet[];
+  id: number;
+  password: string
+}

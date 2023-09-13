@@ -1,8 +1,13 @@
 {
   "users":[
-    { "user": "leandro", "password":"oi", "id": 1, "expenses": [], "accountBalance": 100},
-    { "user": "gabriela", "password":"oi", "id": 1, "expenses": [], "accountBalance": 100},
-    { "user": "sophia", "password":"oi", "id": 1, "expenses": [], "accountBalance": 100},
-    { "user": "iohana", "password":"oi", "id": 1, "expenses": [], "accountBalance": 100}
+    { "name": "leandro", "password":"oi", "id": 1, "expenses": [], "currentBalance": 100},
+    { "name": "gabriela", "password":"oi", "id": 2, "expenses": [], "currentBalance": 100},
+    { "name": "sophia", "password":"oi", "id": 3, "expenses": [], "currentBalance": 100},
+    { "name": "iohana", "password":"oi", "id": 4, "expenses": [], "currentBalance": 100}
+  ],
+  "methodsPayment": [
+    "credit card",
+    "debit card",
+    "cash"
   ]
 }

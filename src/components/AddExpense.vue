@@ -18,6 +18,7 @@
         />
         <label for="currency">Currency</label>
         <select id="currency" v-model="expense.currency">
+          <option value="" disabled selected>Select Currency</option>
           <option
             v-for="(currency, index) in arrayCurrencies"
             :key="index"
@@ -28,6 +29,7 @@
         </select>
         <label for="method">Method</label>
         <select id="method" v-model="expense.method">
+          <option value="" disabled selected>Select Method</option>
           <option
             v-for="(method, index) in methodsPayment"
             :key="index"
@@ -38,6 +40,7 @@
         </select>
         <label for="type">Type</label>
         <select id="type" v-model="expense.type">
+          <option value="" disabled selected>Select Type</option>
           <option
             v-for="(expenseType, index) in typeOfExpense"
             :key="index"
@@ -47,10 +50,12 @@
           </option>
         </select>
       </div>
-      <button v-if="isEdit" @click.prevent="editFom(expense)">
+      <button class="button" v-if="isEdit" @click.prevent="editFom(expense)">
         Edit Expense
       </button>
-      <button v-else @click.prevent="sendForm()">Add expense</button>
+      <button class="button" v-else @click.prevent="sendForm()">
+        Add expense
+      </button>
     </form>
   </div>
 </template>
@@ -121,6 +126,7 @@ export default defineComponent({
 
     return { expense, isEdit };
   },
+  emits: ["closeAddExpense", "closeEditExpense"],
   methods: {
     async sendForm() {
       if (this.addNewExpense) {
@@ -137,18 +143,18 @@ export default defineComponent({
       } else {
         throw new Error("AddExpense isn't defined");
       }
+      this.$emit("closeAddExpense", false);
     },
     editFom(expense: Wallet) {
       if (this.addNewExpense && this.cleanEdit) {
         this.addNewExpense(expense);
         this.cleanEdit();
       }
+      this.$emit("closeEditExpense", false);
     },
     async newFetch() {
       return fetch(
-        "https://economia.awesomeapi.com.br/json/last/".concat(
-          `${this.expense.currency}-BRL`
-        )
+        "https://economia.awesomeapi.com.br/last/USD-BRL,EUR-BRL,BTC-BRL"
       )
         .then((res) => res.json())
         .then((data) => data);
@@ -157,4 +163,91 @@ export default defineComponent({
 });
 </script>
 
-<style scoped></style>
+<style scoped>
+.expense {
+  font-family: "Courier New", Courier, monospace;
+  margin: 0 auto;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  border: 3px solid #fc9b0021;
+  border-radius: 10px;
+  padding: 20px;
+  > form {
+    text-align: center;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    gap: 30px;
+    > div {
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+      > label {
+        font-weight: 700;
+        @media screen and (max-width: 400px) {
+          display: none;
+        }
+      }
+      > input,
+      select {
+        font-family: "Courier New", Courier, monospace;
+        text-align: center;
+        font-weight: 500;
+        font-size: 1rem;
+        padding: 5px 3px;
+        border: 3px solid transparent;
+        box-shadow: 1px 2px 2px gray;
+        border-radius: 5px;
+        background-color: #8080800d;
+        &:hover {
+          border: 3px solid #fc9b0021;
+        }
+        &:focus-visible {
+          outline: 3px solid #fc9b00;
+        }
+        @media screen and (max-width: 400px) {
+          margin: 7px 0;
+        }
+      }
+    }
+    > button {
+      font-family: "Courier New", Courier, monospace;
+      text-align: center;
+      font-weight: bolder;
+      font-size: 1rem;
+      padding: 5px 3px;
+      border: none;
+      box-shadow: 1px 2px 2px gray;
+      border-radius: 5px;
+      background-color: #ffe4c461;
+      cursor: pointer;
+      &:hover {
+        background-color: #fc9d00e0;
+      }
+    }
+  }
+  .button {
+    width: 100%;
+    max-width: 320px;
+    margin: 10px;
+    padding: 10px;
+    color: white;
+    font-family: "Courier New", Courier, monospace;
+    text-align: center;
+    font-weight: bolder;
+    font-size: 1rem;
+    padding: 5px 3px;
+    border: none;
+    box-shadow: 1px 2px 2px gray;
+    border-radius: 5px;
+    background-color: #2c2c2c;
+    cursor: pointer;
+  }
+  .expense-details {
+    display: flex;
+    flex-direction: column;
+  }
+}
+</style>

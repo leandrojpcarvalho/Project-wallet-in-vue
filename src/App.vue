@@ -1,10 +1,12 @@
 <template>
-  <router-view @loginRequest="login" />
+  <div class="bg">
+    <router-view @LoginRequest="login" :loggedUser="loggedUser" />
+  </div>
 </template>
 
 <script lang="ts">
 import { defineComponent, ref } from "vue";
-import { User } from "./types/Wallet";
+import { User, Login } from "./types/Wallet";
 import router from "./router";
 
 export default defineComponent({
@@ -14,19 +16,16 @@ export default defineComponent({
     return { loggedUser, isLoading };
   },
   methods: {
-    login(login) {
+    login(login: Login) {
       this.isLoading = true;
       try {
         fetch(
-          `http://localhost:3000/users?user=${login.user}&password=${login.password}`
+          `http://localhost:3000/users?name=${login.name}&password=${login.password}`
         )
           .then((res) => res.json())
           .then((data) => {
             if (data.length === 1) {
-              this.loggedUser = {
-                ...this.loggedUser,
-                ...data,
-              };
+              this.loggedUser = data[0];
               router.push("index");
             } else {
               window.alert("O usuário nao existe");
@@ -36,6 +35,25 @@ export default defineComponent({
         window.alert(e.message);
       }
     },
+    toLoginPage(userName: string) {
+      if (!this.loggedUser || this.loggedUser.name !== userName) {
+        router.push("/");
+      }
+    },
   },
 });
 </script>
+
+<style>
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+.bg {
+  min-width: 320px;
+  width: 100%;
+  height: 100vh;
+  background-image: url("./assets/bg4.jpg");
+}
+</style>
