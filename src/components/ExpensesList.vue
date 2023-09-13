@@ -13,7 +13,7 @@
             <th class="column-to-hide">Type of expense</th>
             <th class="column-to-hide">Currency</th>
             <th class="column-to-hide">Value</th>
-            <th>Value Converted</th>
+            <th>Value Converted (BRL)</th>
           </tr>
         </thead>
         <tbody>
@@ -28,25 +28,22 @@
                 Delete
               </button>
             </td>
-            <td>{{ expense.description }}</td>
+            <td class="number">{{ expense.description }}</td>
             <td class="column-to-hide">{{ expense.method }}</td>
             <td class="column-to-hide">{{ expense.type }}</td>
             <td class="column-to-hide">{{ expense.currency }}</td>
-            <td class="column-to-hide">{{ expense.value?.toFixed(2) }}</td>
-            <td v-if="expense.value">
-              {{
-                (
-                  expense.value *
-                  Number(expense.currencies[expense.currency.concat("BRL")].ask)
-                ).toFixed(2)
-              }}
+            <td class="column-to-hide number">
+              {{ formatToFinancial(expense.value || 0) }}
+            </td>
+            <td v-if="expense.value" class="number">
+              {{ valueConverted(expense, expense.value) }}
             </td>
           </tr>
         </tbody>
         <tfoot>
           <tr>
             <th :colspan="widthScreen.columnSpanTotal">Total</th>
-            <th :colspan="widthScreen.columnSpanValue">
+            <th :colspan="widthScreen.columnSpanValue" class="number">
               {{ total(expenses) }}
             </th>
           </tr>
@@ -59,6 +56,7 @@
 
 <script lang="ts">
 import { Wallet } from "@/types/Wallet";
+import { formatToFinancial } from "@/ultils";
 import { PropType, computed, defineComponent, ref } from "vue";
 
 export default defineComponent({
@@ -66,7 +64,7 @@ export default defineComponent({
     window.addEventListener("resize", this.resizeWidth);
   },
   data() {
-    const widthRef = ref<number>(0);
+    const widthRef = ref<number>(window.innerWidth);
     const widthScreen = computed(() => {
       if (widthRef.value > 566) {
         return {
@@ -79,7 +77,9 @@ export default defineComponent({
         columnSpanValue: 1,
       };
     });
-    return { widthRef, widthScreen };
+
+    console.log(formatToFinancial(1000000.82));
+    return { widthRef, widthScreen, formatToFinancial };
   },
   props: {
     expenses: {
@@ -97,15 +97,19 @@ export default defineComponent({
   },
   methods: {
     total(expenses: Wallet[]) {
-      return expenses
-        .reduce((total, currExpense) => {
-          const { currency, value, currencies } = currExpense;
-          if (value) {
-            total += value * Number(currencies[currency.concat("BRL")].ask);
-          }
-          return total;
-        }, 0)
-        .toFixed(2);
+      const value = expenses.reduce((total, currExpense) => {
+        const { currency, value, currencies } = currExpense;
+        if (value) {
+          total += value * Number(currencies[currency.concat("BRL")].ask);
+        }
+        return total;
+      }, 0);
+      return formatToFinancial(value);
+    },
+    valueConverted(expense: Wallet, value: number) {
+      const total =
+        value * Number(expense.currencies[expense.currency.concat("BRL")].ask);
+      return formatToFinancial(total);
     },
     resizeWidth(event: any) {
       this.widthRef = event.currentTarget.innerWidth;
@@ -145,6 +149,18 @@ section {
   border-radius: 5px;
   background-color: #2c2c2c;
   cursor: pointer;
+}
+
+.number {
+  font-size: 0.7rem;
+}
+
+th {
+  background-color: white;
+}
+
+tr:nth-child(2n) {
+  background-color: rgba(168, 168, 168, 0.581);
 }
 
 @media screen and (min-width: 786px) {

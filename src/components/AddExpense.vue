@@ -217,14 +217,16 @@ export default defineComponent({
       text-align: center;
       font-weight: bolder;
       font-size: 1rem;
+      color: #2c2c2c94;
       padding: 5px 3px;
       border: none;
       box-shadow: 1px 2px 2px gray;
       border-radius: 5px;
-      background-color: #ffe4c461;
+      background-color: #ffe4c462;
       cursor: pointer;
       &:hover {
         background-color: #fc9d00e0;
+        color: #2c2c2c;
       }
     }
   }
