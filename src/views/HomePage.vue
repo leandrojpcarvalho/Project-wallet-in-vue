@@ -3,7 +3,10 @@
   <main>
     <button @click.prevent="showAddExpense(true)">Add new Expense</button>
     <section v-if="isAddExpense">
-      <ModalLayer @closeAddExpense="showAddExpense">
+      <ModalLayer
+        @closeAddExpense="showAddExpense"
+        @closeEditExpense="showEditExpense"
+      >
         <h2>Add</h2>
         <AddExpense
           :addNewExpense="addNewExpense"
@@ -135,6 +138,7 @@ export default defineComponent({
     },
     showEditExpense(value: boolean) {
       this.isEditExpense = value;
+      this.dataToEdit = undefined;
     },
   },
   updated() {
@@ -168,14 +172,13 @@ main {
   > button {
     width: 100%;
     max-width: 320px;
-    margin: 10px;
-    padding: 10px;
+    margin: 40px 0;
+    padding: 20px 10px;
     color: white;
     font-family: "Courier New", Courier, monospace;
     text-align: center;
     font-weight: bolder;
-    font-size: 1rem;
-    padding: 5px 3px;
+    font-size: 1.2rem;
     border: none;
     box-shadow: 1px 2px 2px gray;
     border-radius: 5px;

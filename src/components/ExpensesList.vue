@@ -29,9 +29,9 @@
               </button>
             </td>
             <td class="number">{{ expense.description }}</td>
-            <td class="column-to-hide">{{ expense.method }}</td>
-            <td class="column-to-hide">{{ expense.type }}</td>
-            <td class="column-to-hide">{{ expense.currency }}</td>
+            <td class="column-to-hide number">{{ expense.method }}</td>
+            <td class="column-to-hide number">{{ expense.type }}</td>
+            <td class="column-to-hide number">{{ expense.currency }}</td>
             <td class="column-to-hide number">
               {{ formatToFinancial(expense.value || 0) }}
             </td>
@@ -56,7 +56,7 @@
 
 <script lang="ts">
 import { Wallet } from "@/types/Wallet";
-import { formatToFinancial } from "@/ultils";
+import { formatToFinancial } from "@/utils";
 import { PropType, computed, defineComponent, ref } from "vue";
 
 export default defineComponent({
@@ -66,7 +66,7 @@ export default defineComponent({
   data() {
     const widthRef = ref<number>(window.innerWidth);
     const widthScreen = computed(() => {
-      if (widthRef.value > 566) {
+      if (widthRef.value > 880) {
         return {
           columnSpanTotal: 6,
           columnSpanValue: 2,
@@ -78,7 +78,6 @@ export default defineComponent({
       };
     });
 
-    console.log(formatToFinancial(1000000.82));
     return { widthRef, widthScreen, formatToFinancial };
   },
   props: {
@@ -114,6 +113,9 @@ export default defineComponent({
     resizeWidth(event: any) {
       this.widthRef = event.currentTarget.innerWidth;
     },
+    handleClickSetClassHide(element: HTMLElement) {
+      element.classList.add("hide");
+    },
   },
 });
 </script>
@@ -127,14 +129,14 @@ section {
   font-size: 0.8rem;
   min-width: 310px;
 }
-@media screen and (max-width: 566px) {
+/* @media screen and (max-width: 880px) {
   section {
     width: 311px;
   }
-}
+} */
 
 .column-to-hide {
-  @media screen and (max-width: 566px) {
+  @media screen and (max-width: 880px) {
     display: none;
   }
 }
@@ -152,19 +154,37 @@ section {
 }
 
 .number {
-  font-size: 0.7rem;
+  font-size: 1rem;
 }
 
 th {
   background-color: white;
+  padding: 8px;
+}
+
+td {
+  padding: 7px;
+  border: 2px solid transparent;
 }
 
 tr:nth-child(2n) {
   background-color: rgba(168, 168, 168, 0.581);
 }
 
-@media screen and (min-width: 786px) {
+tr:hover {
+  cursor: pointer;
+  background-color: #fc9b0067;
+  transition: 0.5s linear ease-in-out;
+}
+
+tr:active {
+  background-color: #fc9b00e4;
+  transition: 0.5s linear ease-in-out;
+}
+
+@media screen and (min-width: 880px) {
   * {
+    font-family: "Courier New", Courier, monospace;
     font-size: 1.2rem;
   }
 }

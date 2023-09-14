@@ -7,7 +7,7 @@
       <h3>Current Balance</h3>
       <button @click="showBalance">
         <span v-if="loggedUser && isVisible">
-          R$ {{ loggedUser.currentBalance.toFixed(2) }}
+          R$ {{ formatToFinancial(loggedUser.currentBalance) }}
         </span>
         <div v-else class="img"></div>
       </button>
@@ -18,6 +18,7 @@
 <script lang="ts">
 import { Login, User } from "@/types/Wallet";
 import { PropType, defineComponent, ref } from "vue";
+import { formatToFinancial } from "@/utils";
 
 export default defineComponent({
   setup() {
@@ -29,6 +30,7 @@ export default defineComponent({
   data() {
     return {
       isVisible: false,
+      formatToFinancial,
     };
   },
   props: {
@@ -53,10 +55,10 @@ export default defineComponent({
 });
 </script>
 
-<style scoped>
+<style>
 header {
   display: flex;
-  height: 100px;
+  height: 150px;
   margin: auto;
   flex-direction: column;
   justify-content: center;
@@ -66,9 +68,13 @@ header {
   background-color: rgba(255, 228, 196, 0.381);
   border-radius: 10px;
   box-shadow: 1px 2px 2px gray;
-  & > h2 > span {
-    color: #fc9d00e0;
-    text-transform: capitalize;
+  & > h2 {
+    font-size: 1.5rem;
+    > span {
+      font-size: 1.5rem;
+      color: #fc9d00e0;
+      text-transform: capitalize;
+    }
   }
   > div {
     display: flex;
@@ -81,10 +87,10 @@ header {
       height: fit-content;
       padding: 0 10px;
       border: none;
-      background-color: #fff9f0;
+      background-color: transparent;
       font-size: 1.2rem;
-      cursor: pointer;
       color: #fc9d00e0;
+      cursor: pointer;
       font-weight: bolder;
     }
   }

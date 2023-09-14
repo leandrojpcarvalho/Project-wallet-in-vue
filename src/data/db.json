@@ -50,7 +50,7 @@
             "description": "coisa",
             "method": "debit",
             "id": 1,
-            "currency": "BTC",
+            "currency": "USD",
             "type": "leisure",
             "value": 12
          },
@@ -99,7 +99,7 @@
             "description": "coisa",
             "method": "debit",
             "id": 4,
-            "currency": "BTC",
+            "currency": "USD",
             "type": "health",
             "value": 7
          },
@@ -148,7 +148,7 @@
             "description": "coisa",
             "method": "cash",
             "id": 10,
-            "currency": "BTC",
+            "currency": "USD",
             "type": "food",
             "value": 20
          },
@@ -197,9 +197,9 @@
             "description": "alguma",
             "method": "debit",
             "id": 5,
-            "currency": "BTC",
+            "currency": "USD",
             "type": "health",
-            "value": 0
+            "value": 5
          },
          {
             "currencies" : {
@@ -246,7 +246,7 @@
             "description": "coisa",
             "method": "card",
             "id": 7,
-            "currency": "BTC",
+            "currency": "EUR",
             "type": "leisure",
             "value": 1
          },
@@ -344,7 +344,7 @@
             "description": "alguma",
             "method": "cash",
             "id": 0,
-            "currency": "BTC",
+            "currency": "USD",
             "type": "health",
             "value": 2
          },
@@ -442,7 +442,7 @@
             "description": "coisa",
             "method": "card",
             "id": 5,
-            "currency": "BTC",
+            "currency": "USD",
             "type": "health",
             "value": 8
          },

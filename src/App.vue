@@ -49,11 +49,19 @@ export default defineComponent({
   margin: 0;
   padding: 0;
   box-sizing: border-box;
+  font-family: "Courier New", Courier, monospace;
+  font-size: 1.2rem;
 }
 .bg {
   min-width: 320px;
   width: 100%;
   height: 100vh;
   background-image: url("./assets/bg4.jpg");
+}
+
+@media screen and (max-width: 600px) {
+  * {
+    font-size: 0.8rem;
+  }
 }
 </style>
