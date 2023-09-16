@@ -8,6 +8,7 @@
 import { defineComponent, ref } from "vue";
 import { User, Login } from "./types/Wallet";
 import router from "./router";
+import dataBase from "./data/dbObj;
 
 export default defineComponent({
   setup() {
@@ -17,24 +18,35 @@ export default defineComponent({
   },
   methods: {
     login(login: Login) {
-      this.isLoading = true;
-      try {
-        fetch(
-          `http://localhost:3000/users?name=${login.name}&password=${login.password}`
-        )
-          .then((res) => res.json())
-          .then((data) => {
-            if (data.length === 1) {
-              this.loggedUser = data[0];
-              router.push("index");
-            } else {
-              window.alert("O usuário nao existe");
-            }
-          });
-      } catch (e: any) {
-        window.alert(e.message);
-      }
+    //  this.isLoading = true;
+    //  try {
+    //    fetch(
+    //      `http://localhost:3000/users?name=${login.name}&password=${login.password}`
+    //    )
+    //      .then((res) => res.json())
+    //      .then((data) => {
+    //        if (data.length === 1) {
+    //          this.loggedUser = data[0];
+    //          router.push("index");
+    //       } else {
+    //          window.alert("O usuário nao existe");
+    //        }
+    //      });
+    //  } catch (e: any) {
+    //    window.alert(e.message);
+    //  }
+    verifyUser(login);
     },
+    verifyUser(login: Login) {
+      this.isLoading(true)
+      const user = dataBase.users.find((user) => user.name === login.name && user.password === login.password);
+      if (user) {
+        this.loggedUser = user;
+        router.push("index")
+      } else {
+       window.alert("O usuário nao existe");
+      }
+    }
     toLoginPage(userName: string) {
       if (!this.loggedUser || this.loggedUser.name !== userName) {
         router.push("/");
