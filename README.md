@@ -11,8 +11,8 @@ npm run serve
 ```
 ### to run with json-server
 ```
-need make a clone and
+need make a clone
+ - uncomment line 21 at 37 in App.vue
+ - comment line 38 in App.vue;
  - npm run start 
- - uncomment line 21 at 37
- - comment line 38;
 ```
