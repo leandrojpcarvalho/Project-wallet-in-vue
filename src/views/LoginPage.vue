@@ -139,6 +139,11 @@ export default defineComponent({
   .body .main .login {
     width: 90%;
   }
+  .body .main .login .container .login-buttons {
+    flex-direction: column;
+    gap: 20px;
+    align-items: stretch;
+  }
 }
 .container {
   > form {
