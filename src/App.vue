@@ -16,6 +16,9 @@ export default defineComponent({
     const isLoading = ref<boolean>(false);
     return { loggedUser, isLoading };
   },
+  mounted() {
+    window.alert("Utilize 'user' como login e senha para ter acesso ao site!");
+  },
   methods: {
     login(login: Login) {
       // this.isLoading = true;
