@@ -110,6 +110,7 @@ export default defineComponent({
         value * Number(expense.currencies[expense.currency.concat("BRL")].ask);
       return formatToFinancial(total);
     },
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
     resizeWidth(event: any) {
       this.widthRef = event.currentTarget.innerWidth;
     },

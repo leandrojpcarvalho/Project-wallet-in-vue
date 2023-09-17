@@ -4,6 +4,7 @@ export function formatToFinancial(numberToConvert: number): string {
   const lastPos = arrayDecimalAndNumber[0].length - 1;
   let count = 1;
   const financialNumber = [];
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   for (const digitPos in arrayDecimalAndNumber[0] as any) {
     financialNumber.unshift(
       arrayDecimalAndNumber[0][lastPos - Number(digitPos)]
