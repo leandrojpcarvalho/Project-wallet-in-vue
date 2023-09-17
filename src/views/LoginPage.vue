@@ -95,6 +95,7 @@ export default defineComponent({
   flex-flow: row nowrap;
   background-color: #f0f0f0;
 }
+
 .main {
   display: flex;
   flex-direction: column;
@@ -129,6 +130,14 @@ export default defineComponent({
     color: #fc9d00e0;
     font-family: "Raleway", sans-serif;
     text-shadow: 3px 5px 10px #00000059;
+  }
+}
+@media screen and (max-width: 400px) {
+  .body .main .login .container .login-info {
+    grid-template-columns: none;
+  }
+  .body .main .login {
+    width: 90%;
   }
 }
 .container {
@@ -192,6 +201,12 @@ export default defineComponent({
         }
       }
     }
+  }
+}
+
+@media screen and (max-width: 400px) {
+  .body {
+    width: 100%;
   }
 }
 </style>
